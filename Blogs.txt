@@ -1,0 +1,19 @@
+Article 01: https://medium.com/@mahmdshafee/my-first-week-at-the-buildables-data-science-fellowship-learning-python-oop-dsa-and-data-b694dacd77c5
+
+Article 02: https://medium.com/@mahmdshafee/my-second-week-at-buildables-balancing-academics-and-fellowship-work-in-data-science-ab67912ade64
+
+Article 03: https://medium.com/ai-in-plain-english/week-3-at-buildables-ds-fellowship-turning-feedback-into-action-98e94feb0424
+
+Article 04: https://medium.com/ai-in-plain-english/predicting-progress-one-week-of-data-work-feature-engineering-and-fellowship-growth-852cd886cb01
+
+Article 05: https://medium.com/ai-in-plain-english/the-journey-of-building-a-food-delivery-delay-prediction-system-from-data-to-dashboard-9cf735ebd18e
+
+Article 06: https://medium.com/@mahmdshafee/building-better-recommenders-a-data-scientists-journey-59b71552d0d8
+
+Article 07: https://medium.com/@mahmdshafee/inside-the-neural-mind-my-deep-learning-journey-2f42cbc5973b
+
+Article 08: https://medium.com/@mahmdshafee/unsupervised-learning-discovering-structure-in-the-unknown-53c24c6e7a92
+
+Article 09: https://medium.com/@mahmdshafee/from-confusion-to-clarity-building-moodflix-a-4-week-journey-into-nlp-emotion-based-71541a2ebbfe
+
+Article 10: https://medium.com/@mahmdshafee/my-data-science-fellowship-journey-muhammad-ahmad-3f4cbb71cfc7

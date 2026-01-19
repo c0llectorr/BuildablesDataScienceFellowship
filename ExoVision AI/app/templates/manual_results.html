@@ -1,0 +1,166 @@
+<!-- templates/manual_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Input Results - Exoplanet Detection with AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 60px;
+        }
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .prediction-card {
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .xgb-result {
+            background-color: #e7f3ff;
+            border-left: 5px solid #0066cc;
+        }
+        .dt-result {
+            background-color: #e7f9e7;
+            border-left: 5px solid #28a745;
+        }
+        .data-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .confidence-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .confidence-fill {
+            height: 100%;
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Exoplanet AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('upload_file') }}">Upload CSV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('manual_input') }}">Manual Input</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 results-container">
+        <h2 class="text-center mb-4">Prediction Results</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="prediction-card xgb-result">
+                    <h4>XGBoost Model Prediction</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>{{ results.xgb_prediction }}</h3>
+                        <span class="badge bg-primary fs-6">{{ results.xgb_confidence }}</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: {{ results.xgb_confidence }};"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="prediction-card dt-result">
+                    <h4>Decision Tree Model Prediction</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>{{ results.dt_prediction }}</h3>
+                        <span class="badge bg-success fs-6">{{ results.dt_confidence }}</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: {{ results.dt_confidence }}; background-color: #28a745;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card data-card">
+            <div class="card-body">
+                <h5 class="card-title">Input Data</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>System Properties</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Number of Stars:</strong> {{ results.data.sy_snum }}</li>
+                            <li><strong>Number of Planets:</strong> {{ results.data.sy_pnum }}</li>
+                            <li><strong>Discovery Year:</strong> {{ results.data.disc_year }}</li>
+                            <li><strong>System Distance:</strong> {{ results.data.sy_dist }} parsecs</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Discovery Method</h6>
+                        <p>{{ results.data.discoverymethod }}</p>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6>Planetary Properties</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Orbital Period:</strong> {{ results.data.pl_orbper }} days</li>
+                            <li><strong>Semi-Major Axis:</strong> {{ results.data.pl_orbsmax }} AU</li>
+                            <li><strong>Planet Radius (Earth):</strong> {{ results.data.pl_rade }} Earth radii</li>
+                            <li><strong>Planet Radius (Jupiter):</strong> {{ results.data.pl_radj }} Jupiter radii</li>
+                            <li><strong>Planet Mass (Earth):</strong> {{ results.data.pl_bmasse }} Earth masses</li>
+                            <li><strong>Planet Mass (Jupiter):</strong> {{ results.data.pl_bmassj }} Jupiter masses</li>
+                            <li><strong>Orbital Eccentricity:</strong> {{ results.data.pl_orbeccen }}</li>
+                            <li><strong>Insolation Flux:</strong> {{ results.data.pl_insol }} Earth flux</li>
+                            <li><strong>Equilibrium Temperature:</strong> {{ results.data.pl_eqt }} K</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Stellar Properties</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Stellar Temperature:</strong> {{ results.data.st_teff }} K</li>
+                            <li><strong>Stellar Radius:</strong> {{ results.data.st_rad }} Solar radii</li>
+                            <li><strong>Stellar Mass:</strong> {{ results.data.st_mass }} Solar masses</li>
+                            <li><strong>Stellar Metallicity:</strong> {{ results.data.st_met }}</li>
+                            <li><strong>Stellar Surface Gravity:</strong> {{ results.data.st_logg }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('manual_input') }}" class="btn btn-primary">Analyze Another Candidate</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 Exoplanet Detection with AI. NASA Space Apps Challenge.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
