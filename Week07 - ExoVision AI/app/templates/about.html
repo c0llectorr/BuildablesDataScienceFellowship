@@ -1,0 +1,169 @@
+<!-- templates/about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Exoplanet Detection with AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 60px;
+        }
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .section-card {
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .model-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        .feature-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Exoplanet AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('upload_file') }}">Upload CSV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('manual_input') }}">Manual Input</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('about') }}">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 about-container">
+        <div class="section-card">
+            <h2 class="text-center mb-4">About Exoplanet Detection with AI</h2>
+            <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Exoplanet" class="feature-image">
+            
+            <p>This project was developed as part of the NASA International Space Apps Challenge 2025, under the challenge "A World Away: Hunting for Exoplanets with AI." The aim was to design a machine learning-based system that can classify exoplanet candidates as either confirmed planets or false positives using NASA's publicly available datasets.</p>
+            
+            <p>The discovery of exoplanets—planets orbiting stars outside our solar system—has been one of the most transformative achievements in modern astronomy. These discoveries provide critical insights into planetary system formation, stellar evolution, and the potential habitability of other worlds. Since the launch of NASA's Kepler and K2 missions, thousands of exoplanet candidates have been identified, but many remain unconfirmed due to the difficulty of distinguishing real planetary signals from false positives caused by binary stars, stellar variability, or instrumental noise.</p>
+        </div>
+
+        <div class="section-card">
+            <h3 class="mb-3">Dataset</h3>
+            <p>We used the K2 Planets and Candidates Catalog (k2pandc) from the NASA Exoplanet Archive. This catalog contains thousands of entries describing planetary candidates, their host stars, and associated system-level properties.</p>
+            
+            <p>Each row represents a planet candidate, with columns describing planetary, stellar, and system-level parameters. After preprocessing and cleaning, our working dataset consisted of 4,004 entries with 28 carefully selected features.</p>
+            
+            <h4>Key Features:</h4>
+            <ul>
+                <li><strong>Planetary Properties:</strong> Orbital period, radius, mass, equilibrium temperature</li>
+                <li><strong>Stellar Properties:</strong> Temperature, radius, mass, metallicity, surface gravity</li>
+                <li><strong>System-Level Properties:</strong> Distance to the system, number of planets, discovery method</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h3 class="mb-3">Machine Learning Models</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="model-card">
+                        <h4>XGBoost Classifier</h4>
+                        <p>XGBoost is a powerful gradient boosting model capable of capturing complex relationships in the data. Our XGBoost model achieved an accuracy of 99.6% - 99.7% on the test set.</p>
+                        
+                        <h5>Parameters:</h5>
+                        <ul>
+                            <li>n_estimators: 300</li>
+                            <li>learning_rate: 0.05</li>
+                            <li>max_depth: 6</li>
+                            <li>subsample: 0.8</li>
+                            <li>colsample_bytree: 0.8</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="model-card">
+                        <h4>Decision Tree Classifier</h4>
+                        <p>Decision Trees provide interpretable structure, highlighting key decision-making features. Our regularized Decision Tree model achieved an accuracy of 99.6% on the test set.</p>
+                        
+                        <h5>Parameters:</h5>
+                        <ul>
+                            <li>max_depth: 4</li>
+                            <li>min_samples_split: 30</li>
+                            <li>min_samples_leaf: 15</li>
+                            <li>max_features: "sqrt"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h3 class="mb-3">Data Preprocessing and Feature Engineering</h3>
+            <p>Our workflow involved careful dataset exploration, preprocessing, feature engineering, and the training of supervised learning models. Key steps included:</p>
+            
+            <ul>
+                <li><strong>Column Filtering:</strong> Removed non-essential columns such as object identifiers, bibliographic references, and error bounds</li>
+                <li><strong>Handling Missing Values:</strong> Missing values were imputed using the median to ensure robustness against skewed distributions</li>
+                <li><strong>Feature Scaling:</strong> Continuous variables were standardized to zero mean and unit variance</li>
+                <li><strong>Encoding Categorical Variables:</strong> Discovery method was one-hot encoded</li>
+                <li><strong>Feature Engineering:</strong> Created new features such as star-planet size ratio, temperature difference, and log insolation flux</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h3 class="mb-3">Results and Limitations</h3>
+            <p>Our models achieved near-perfect performance on the K2 catalog, with accuracy above 99%. However, further analysis revealed catalog-level information leakage that artificially inflated the performance. Despite this limitation, the project demonstrates the feasibility of using AI for exoplanet classification and outlines a roadmap for more rigorous scientific approaches.</p>
+            
+            <p>While the hackathon prototype successfully highlighted the feasibility of AI-assisted exoplanet vetting, future improvements must focus on scientifically rigorous validation. The project thus serves as both a proof-of-concept and a roadmap for how AI can accelerate exoplanet discovery in a real-world context.</p>
+        </div>
+
+        <div class="section-card">
+            <h3 class="mb-3">How to Use This Application</h3>
+            <p>This web application allows you to:</p>
+            
+            <ol>
+                <li><strong>Upload a CSV file:</strong> Upload a CSV file containing exoplanet data to get predictions for multiple candidates at once</li>
+                <li><strong>Enter data manually:</strong> Input data for a single exoplanet candidate to get an instant prediction</li>
+                <li><strong>View results and visualizations:</strong> See predictions from both models, along with confidence scores and data visualizations</li>
+                <li><strong>Evaluate performance:</strong> If your data includes true labels, view detailed metrics and confusion matrices</li>
+            </ol>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Try It Now</a>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 Exoplanet Detection with AI. NASA Space Apps Challenge.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
